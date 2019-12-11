@@ -1,7 +1,7 @@
 # Game of Greed
 
 **Author**: Joseph Hangarter
-**Version**: 1.0.1 (increment the patch/fix version number up if you make more commits past your first submission)
+**Version**: 1.0.5
 
 ## Overview
 * Define a Game class.
@@ -28,3 +28,6 @@
 ## Change Log
 12-09-2019 2:12pm - Initial commit.
 12-09-2019 2:56pm - Greeting and Prompt functionality complete.
+12-10-2019 6:03pm - Created Roll and Scoring Dictionary, completed `calculator_score`
+12-10-2019 6:10pm - Added `gitignore` and `editorconfig`
+12-10-2019 11:48pm - Added some tests
