@@ -43,7 +43,7 @@ class Game:
         self.score = 0
         self.pairs = 0
         self.is_straight = True
-        self.roll = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1}
+        self.roll = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 3}
         #{1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1}
     
     #Greeting; Flow
@@ -60,6 +60,7 @@ class Game:
 
     def calculate_score(self):
         for roll_value, count in self.roll.items():
+
             #if one of the values is not 1, there is no straight
             if count != 1:
                 self.is_straight = False
