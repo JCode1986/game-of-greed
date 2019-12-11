@@ -1,13 +1,13 @@
 from game_of_greed import Game
 import pytest
 
-def test_greeting(sample_play):
+def test_greeting(game):
     set_scripts(['Welcome to Game of Greed'])
 
-    sample_play.play()
+    game.play()
 
 
-def test_greeting_prompt(sample_play):
+def test_greeting_prompt(game):
 
     set_scripts(
         ['Welcome to Game of Greed', 'OK. Maybe another time'],
@@ -15,17 +15,19 @@ def test_greeting_prompt(sample_play):
         []
     )
 
-    sample_play.play()
+    game.play()
 
-def test_scoring_ones_and_fives(sample_play):
-    actual = sample_play.calculate_score([1, 2, 3, 4, 5, 6])
+def test_scoring_ones_and_fives(game):
+    actual = game.calculate_score([1, 2, 3, 4, 5, 6])
     expected = 150
     assert actual == expected
 
-def test_scoring_multiple_ones_and_fives(sample_play):
-    actual = sample_play.calculate_score([1, 5, 1, 5, 1, 6])
+def test_scoring_multiple_ones_and_fives(game):
+    actual = game.calculate_score([1, 5, 1, 5, 1, 6])
     expected = 400
     assert actual == expected
+
+
 
 #################################################
 ## Below code is for helping out tests above ####
@@ -38,7 +40,7 @@ scripts = {
 }
 
 @pytest.fixture()
-def sample_play():
+def game():
     play = Game(mock_print, mock_input)
     return play
 

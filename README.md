@@ -28,3 +28,4 @@
 ## Change Log
 12-09-2019 2:12pm - Initial commit.
 12-09-2019 2:56pm - Greeting and Prompt functionality complete.
+12-10-2019 5:45pm - Created Roll and Scoring Dictionary, completed `calculator_score`
