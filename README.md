@@ -1,7 +1,7 @@
 # Game of Greed
 
 **Author**: Joseph Hangarter
-**Version**: 1.0.5
+**Version**: 1.0.6
 
 ## Overview
 * Define a Game class.
@@ -31,3 +31,5 @@
 12-10-2019 6:03pm - Created Roll and Scoring Dictionary, completed `calculator_score`
 12-10-2019 6:10pm - Added `gitignore` and `editorconfig`
 12-10-2019 11:48pm - Added some tests
+12-11-2019 4:53pm - Calculate score funciontality complete and tests passing
+12-11-2019 5:46pm - Worked on game flow

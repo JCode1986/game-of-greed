@@ -50,9 +50,14 @@ class Game:
         self._print('Welcome to Game of Greed')
         question = self._input('Wanna play? press y then enter to proceed. ')
         if question == 'y':
+            self._print('Game Rules: You get to roll 6 die. Single fives are worth 50 points | Single ones are worth 100 points | You get a certain amount of points when getting 3 pairs, three or more of the same number, or a straight. Choose to store your points, by picking specific die that gives you points. This also removes that die in the process, leaving you with less die to roll with. If you dont get any points, you will lose your turn, and lose any points you have stored in the process. Bank your points if you don\'t feel lucky.')
+
+            input('Hit enter to start the game: ')
             self.roll = self.roll_dice(6)
             #show dice to user
-            self._print(self.roll)
+            self._print(f'You rolled a {self.roll}')
+            # self.calculate_score(self.roll_dice)
+
             #what they wanna keep// input on what to keep?
             #score what they kept// calculate score with print
             #ask if they wanna roll again, or bank points
@@ -61,6 +66,18 @@ class Game:
 
     def roll_dice(self, num):
         return tuple(randint(1, 6) for _ in range(num))
+
+    def store_points(self):
+        pass
+
+    def bank_points(self):
+        return self.score
+
+    def game_summary(self):
+        self._print('*' * 38)
+        self._print(f'SCORE: {self.score}')
+        self._print(f'MORE TO COME- insert here')
+        self._print('*' * 38)
 
     def calculate_score(self, dice):
         dice = Counter(dice)
@@ -74,9 +91,6 @@ class Game:
             #increment pairs
             if count == 2:
                 self.pairs += 1
-
-        # if dice.items() == {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1}:
-        #     self.score += int(dice_roll_score_dict['Straight 1 - 6'])
 
         #Straight
         if is_straight and len(dice) == 6:
@@ -160,10 +174,8 @@ class Game:
             self.score += 0
         return self.score 
         
-    def bank_score(self):
-        pass
-
 if __name__ == "__main__":
     game = Game()
     game.play()
-    game.calculate_score()
+    # game.calculate_score((1, 2, 3, 4, 6, 5))
+
