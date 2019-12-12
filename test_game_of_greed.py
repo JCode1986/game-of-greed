@@ -1,5 +1,6 @@
 from game_of_greed import Game
 import pytest
+from collections import Counter
 
 def test_greeting(game):
     set_scripts(['Welcome to Game of Greed'])
@@ -17,17 +18,12 @@ def test_greeting_prompt(game):
 
     game.play()
 
-def test_scoring_ones_and_fives(game):
-    actual = game.calculate_score({1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1})
-    expected = 150
+def test_zilch(game):
+    expected = 0
+    actual = game.calculate_score((2,3,4,6,2,3))
     assert actual == expected
 
-def test_scoring_multiple_ones_and_fives(game):
-    actual = game.calculate_score({1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1})
-    expected = 400
-    assert actual == expected
-
-@pytest.mark.skip('pending')
+# @pytest.mark.skip('pending')
 @pytest.mark.parametrize("dice,expected",[
     ((1,), 100),
     ((2,), 0),
@@ -68,6 +64,12 @@ def test_scoring_multiple_ones_and_fives(game):
     ((1,2,3,4,5,6), 1500),
     ((1,1,2,2,3,3), 1500),
     ((6,6,6,1), 700),
+    ((5,5,5,1,1,1), 1500),
+    ((6,6,6,1,1,3), 800),
+    ((1,2,3,4,5,6), 1500),
+    ((1,1,5,5,5,5), 1200),
+    ((2,3,4,6,2,3), 0)
+
 ])
 def test_calculate_score(game, dice, expected):
     actual = game.calculate_score(dice)
@@ -75,7 +77,7 @@ def test_calculate_score(game, dice, expected):
 
 def test_calculate_score_simple():
     game = Game()
-    actual = g.calculate_score((1,2))
+    actual = game.calculate_score((1,2))
     expected = 100
     assert expected == actual
 
@@ -87,11 +89,6 @@ def test_calculate_score_fancy(game, keepers, expected):
     actual = game.calculate_score(keepers)
     assert actual == expected
 
-
-def test_zilch(game):
-    expected = 0
-    actual = game.calculate_score((2,3,4,6,2,3))
-    assert actual == expected
 
 #################################################
 ## Below code is for helping out tests above ####
