@@ -62,16 +62,16 @@ class Game:
     def start(self):
         self.score = 0
 
-        round_num = 1
+        self.round_num = 1
 
         for i in range(1, self.turns + 1):
             round_score = self.handle_round()
 
-            self._print(f'You banked {round_score} points in round {round_num}')
+            self._print(f'You banked {round_score} points in round {self.round_num}')
 
             self.score += round_score
 
-            round_num += 1
+            self.round_num += 1
 
             self._print(f'You have {self.score} points total')
 
@@ -112,7 +112,7 @@ class Game:
 
             zilch_check_score = self.calculate_score(roll)
 
-            self._print(f'{self.turns}: You rolled {roll}')
+            self._print(f'Round {self.round_num}: You rolled {roll}')
 
             if zilch_check_score == 0:
                 self._print('Oh noes! Zilch')

@@ -7,6 +7,7 @@ ONLY use public methods
 """
 
 from game import Game
+from collections import Counter
 
 class LazyPlayer:
     # constructor, play and calcuate_score available

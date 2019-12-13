@@ -167,7 +167,7 @@ class Game:
             fives_used = True
 
         # must be 3 pairs
-        if len(dice_counter) == 3 and dice_counter.most_common()[0][1] == 2:
+        if len(dice_counter) == 3 and dice_counter.most_common()[2][1] == 2:
             ones_used = True
             fives_used = True
             score = 1500
