@@ -33,3 +33,4 @@
 12-10-2019 11:48pm - Added some tests
 12-11-2019 4:53pm - Calculate score funciontality complete and tests passing
 12-11-2019 5:46pm - Worked on game flow
+12-12-2019 11:39pm - Added on `player-bot.py` and `game.py`. Also worked on `game_of_greed.py`
