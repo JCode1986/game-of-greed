@@ -44,6 +44,7 @@ class Game:
         self.score = 0
         self.pairs = 0
         self.roll = None
+        self.turns = 10
     
     #Greeting; Flow
     def play(self):
@@ -52,34 +53,97 @@ class Game:
         if question == 'y':
             self._print('Game Rules: You get to roll 6 die. Single fives are worth 50 points | Single ones are worth 100 points | You get a certain amount of points when getting 3 pairs, three or more of the same number, or a straight. Choose to store your points, by picking specific die that gives you points. This also removes that die in the process, leaving you with less die to roll with. If you dont get any points, you will lose your turn, and lose any points you have stored in the process. Bank your points if you don\'t feel lucky.')
 
-            input('Hit enter to start the game: ')
-            self.roll = self.roll_dice(6)
-            #show dice to user
-            self._print(f'You rolled a {self.roll}')
-            # self.calculate_score(self.roll_dice)
+            self._input('Hit enter to start the game ')
+            self.start()
 
-            #what they wanna keep// input on what to keep?
-            #score what they kept// calculate score with print
-            #ask if they wanna roll again, or bank points
         else:
             self._print('OK. Maybe another time')
+
+    def start(self):
+        self.score = 0
+
+        round_num = 1
+
+        for i in range(1, self.turns + 1):
+            round_score = self.handle_round()
+
+            self._print(f'You banked {round_score} points in round {round_num}')
+
+            self.score += round_score
+
+            round_num += 1
+
+            self._print(f'You have {self.score} points total')
+
+
+        self._print('Thanks for playing!')
 
     def roll_dice(self, num):
         return tuple(randint(1, 6) for _ in range(num))
 
-    def store_points(self):
-        pass
+    def validate_roll(self, roll):
+        while True:
 
-    def bank_points(self):
-        return self.score
+            keep_response = self._input('Enter which ones to keep: ')
 
-    def game_summary(self):
-        self._print('*' * 38)
-        self._print(f'SCORE: {self.score}')
-        self._print(f'MORE TO COME- insert here')
-        self._print('*' * 38)
+            keepers = tuple(int(char) for char in keep_response)
+
+            if self.validate(roll, keepers):
+                return keepers
+            else:
+                self._print('No way pal')
+                self._print(roll)
+
+    def validate(self, roll, keepers):
+
+        roll_counter = Counter(roll)
+        keepers_counter = Counter(keepers)
+        return len(keepers_counter - roll_counter) == 0
+
+    def handle_round(self):
+        num_dice = 6
+
+        score = 0
+
+        while(True):
+            self._print(f'Rolling {num_dice} dice')
+
+            roll = self.roll_dice(num_dice)
+
+            zilch_check_score = self.calculate_score(roll)
+
+            self._print(f'{self.turns}: You rolled {roll}')
+
+            if zilch_check_score == 0:
+                self._print('Oh noes! Zilch')
+                return 0
+
+            keepers = self.validate_roll(roll)
+
+            # TODO: handle non scoring but mysteriously used dice
+            num_dice -= len(keepers)
+
+            score += self.calculate_score(keepers)
+
+            self._print(f'You can bank {score} points or try for more')
+
+            if num_dice == 0:
+                num_dice = 6
+
+            self._print(f'You have {num_dice} dice remaining')
+
+            roll_again_response = self._input(f'Roll again? y/n: ')
+
+            if not roll_again_response == 'y':
+                break
+
+
+        return score
+
+
 
     def calculate_score(self, dice):
+        score = 0
         dice = Counter(dice)
         is_straight = True
         for roll_value, count in dice.items():
@@ -94,88 +158,86 @@ class Game:
 
         #Straight
         if is_straight and len(dice) == 6:
-            self.score += dice_roll_score_dict['Straight 1 - 6']
-            return self.score
+            score += dice_roll_score_dict['Straight 1 - 6']
+            return score
         #3 Pairs
         if self.pairs == 3:
-            self.score += 1500
-            return self.score
+            score += 1500
+            return score
         #points for single 1's and 5's 
         if dice[1] == 1:
-            self.score += dice[1] * 100
+            score += dice[1] * 100
         if dice[5] == 1:
-            self.score += dice[5] * 50
+            score += dice[5] * 50
         if dice[1] == 2 and self.pairs < 2:
-            self.score += dice[1] * 100
+            score += dice[1] * 100
         if dice[5] == 2 and self.pairs < 2:
-            self.score += dice[5] * 50
+            score += dice[5] * 50
 
         # 6's        
         if dice[6] == 3:
-            self.score += dice_roll_score_dict['Three x 6']
+            score += dice_roll_score_dict['Three x 6']
         elif dice[6] == 4:
-            self.score += dice_roll_score_dict['Four x 6']
+            score += dice_roll_score_dict['Four x 6']
         elif dice[6] == 5:
-            self.score += dice_roll_score_dict['Five x 6']
+            score += dice_roll_score_dict['Five x 6']
         elif dice[6] == 6:
-            self.score += dice_roll_score_dict['Six x 6']
+            score += dice_roll_score_dict['Six x 6']
 
         # 5's
         if dice[5] == 3:
-            self.score += dice_roll_score_dict['Three x 5']
+            score += dice_roll_score_dict['Three x 5']
         elif dice[5] == 4:
-            self.score += dice_roll_score_dict['Four x 5']
+            score += dice_roll_score_dict['Four x 5']
         elif dice[5] == 5:
-            self.score += dice_roll_score_dict['Five x 5']
+            score += dice_roll_score_dict['Five x 5']
         elif dice[5] == 6:
-            self.score += dice_roll_score_dict['Six x 5']
+            score += dice_roll_score_dict['Six x 5']
 
         # 4's 
         if dice[4] == 3:
-            self.score += dice_roll_score_dict['Three x 4']
+            score += dice_roll_score_dict['Three x 4']
         elif dice[4] == 4:
-            self.score += dice_roll_score_dict['Four x 4']
+            score += dice_roll_score_dict['Four x 4']
         elif dice[4] == 5:
-            self.score += dice_roll_score_dict['Five x 4']
+            score += dice_roll_score_dict['Five x 4']
         elif dice[4] == 6:
-            self.score += dice_roll_score_dict['Six x 4']
+            score += dice_roll_score_dict['Six x 4']
 
         # 3's
         if dice[3] == 3:
-            self.score += dice_roll_score_dict['Three x 3']
+            score += dice_roll_score_dict['Three x 3']
         elif dice[3] == 4:
-            self.score += dice_roll_score_dict['Four x 3']
+            score += dice_roll_score_dict['Four x 3']
         elif dice[3] == 5:
-            self.score += dice_roll_score_dict['Five x 3']
+            score += dice_roll_score_dict['Five x 3']
         elif dice[3] == 6:
-            self.score += dice_roll_score_dict['Six x 3']
+            score += dice_roll_score_dict['Six x 3']
 
         # 2's
         if dice[2] == 3:
-            self.score += dice_roll_score_dict['Three x 2']
+            score += dice_roll_score_dict['Three x 2']
         elif dice[2] == 4:
-            self.score += dice_roll_score_dict['Four x 2']
+            score += dice_roll_score_dict['Four x 2']
         elif dice[2] == 5:
-            self.score += dice_roll_score_dict['Five x 2']
+            score += dice_roll_score_dict['Five x 2']
         elif dice[2] == 6:
-            self.score += dice_roll_score_dict['Six x 2']
+            score += dice_roll_score_dict['Six x 2']
         
         # 1's
         if dice[1] == 3:
-            self.score += dice_roll_score_dict['Three x 1']
+            score += dice_roll_score_dict['Three x 1']
         elif dice[1] == 4:
-            self.score += dice_roll_score_dict['Four x 1']
+            score += dice_roll_score_dict['Four x 1']
         elif dice[1] == 5:
-            self.score += dice_roll_score_dict['Five x 1']
+            score += dice_roll_score_dict['Five x 1']
         elif dice[1] == 6:
-            self.score += dice_roll_score_dict['Six x 1']
+            score += dice_roll_score_dict['Six x 1']
 
         else:
-            self.score += 0
-        return self.score 
+            score += 0
+        return score 
         
 if __name__ == "__main__":
     game = Game()
     game.play()
-    # game.calculate_score((1, 2, 3, 4, 6, 5))
-
